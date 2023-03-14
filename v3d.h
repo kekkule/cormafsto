@@ -8,7 +8,7 @@
 
 using namespace std;
 
-template <class T>
+template <typename T>
 class V3D {
 private:
     T x, y, z;
@@ -64,8 +64,8 @@ public:
 
     // template <class V> friend V3D<V> from_polar(const V3D<V>& A);
     // template <class V> friend V3D<V> normalize(V3D<V>& A);
-    template <class V>
-    friend V3D<V> mul (const V3D<V>& A, const V3D<V>& B);
+    template <typename V>
+    friend V3D<V> mul (const V3D<>& A, const V3D<V>& B);
 };
 
 #endif
