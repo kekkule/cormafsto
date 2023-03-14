@@ -28,44 +28,47 @@ public:
         , z (A.z) { }
     ~V3D<T> () { }
 
-    void set_ (T X, T Y, T Z); // { x = X; y = Y; z = Z; }
+    void set_ (T X, T Y, T Z);
 
-    T    get_x (); // { return x; }
-    T    get_y (); // { return y; }
-    T    get_z (); // { return z; }
+    T    get_x (); 
+    T    get_y (); 
+    T    get_z (); 
 
-    T    module (); // { return sqrt(x*x + y*y + z*z); }
+    T    module (); 
 
-    void operator= (const V3D<T>& A) {
-        x = A.x;
-        y = A.y;
-        z = A.z;
-    }
+    template <typename N>
+    void operator= (const V3D<N>& A);
 
-    V3D<T>  operator+ (const V3D<T>& A);
-    V3D<T>& operator+= (const V3D<T>& A);
-    V3D<T>  operator- (const V3D<T>& A);
-    V3D<T>& operator-= (const V3D<T>& A);
+    template <typename N>
+    V3D<T>  operator+ (const V3D<N>& A);
+
+    template <typename N>
+    V3D<T>& operator+= (const V3D<N>& A);
+
+    template <typename N>
+    V3D<T>  operator- (const V3D<N>& A);
+
+    template <typename N>
+    V3D<T>& operator-= (const V3D<N>& A);
+
+    template <typename N>
+    V3D<T> operator* (V3D<N> A);
 
     template <typename N>
     V3D<T> operator* (N A);
+
     template <typename N>
     V3D<T> operator/ (N A);
 
-    V3D<T> from_polar (const V3D<T>& A);
+    template <typename N>
+    V3D<T> from_polar (const V3D<N>& A);
+
+    V3D<T> from_polar (T r, T thetta, T fi);
+
     V3D<T> normalize ();
 
-    // template <class V> friend V3D<V> operator+ (const V3D<V>& A, const  V3D<V>& B);
-    // template <class V> friend V3D<V>& operator+= (V3D<V>& A, const V3D<V>& B);
-    // template <class V> friend V3D<V> operator- (const V3D<V>& A, const V3D<V>& B);
-    // template <class V> friend V3D<V>& operator-= (V3D<V>& A, const V3D<V>& B);
-    // template <class V> friend V3D<V> operator* (const V3D<V>& A, V B);
-    // template <class V> friend V3D<V> operator/ (const V3D<V>& A, V B);
-
-    // template <class V> friend V3D<V> from_polar(const V3D<V>& A);
-    // template <class V> friend V3D<V> normalize(V3D<V>& A);
-    template <typename V>
-    friend V3D<V> mul (const V3D<>& A, const V3D<V>& B);
+    template <typename N>
+    friend V3D<T> mul (const V3D<T>& A, const V3D<N>& B);
 };
 
-#endif
+#endif //V3D_GUARD
