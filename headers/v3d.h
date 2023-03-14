@@ -28,50 +28,37 @@ public:
         , z (A.z) { }
     ~V3D<T> () { }
 
-    void set_ (T X, T Y, T Z);
+    void    set_ (T X, T Y, T Z);
 
-    T    get_x (); 
-    T    get_y (); 
-    T    get_z (); 
+    T       get_x ();
+    T       get_y ();
+    T       get_z ();
 
-    T    module (); 
+    T       module ();
 
-    template <typename N>
-    void operator= (const V3D<N>& A);
+    void    operator= (const V3D<T>& A);
 
-    template <typename N>
-    V3D<T>  operator+ (const V3D<N>& A);
+    V3D<T>  operator+ (const V3D<T>& A);
+    V3D<T>& operator+= (const V3D<T>& A);
 
-    template <typename N>
-    V3D<T>& operator+= (const V3D<N>& A);
+    V3D<T>  operator- (const V3D<T>& A);
+    V3D<T>& operator-= (const V3D<T>& A);
 
-    template <typename N>
-    V3D<T>  operator- (const V3D<N>& A);
+    V3D<T>  operator* (V3D<T> A);
+    V3D<T>  operator* (T A);
 
-    template <typename N>
-    V3D<T>& operator-= (const V3D<N>& A);
+    V3D<T>  operator/ (T A);
 
-    template <typename N>
-    V3D<T> operator* (V3D<N> A);
+    V3D<T>  from_polar (const V3D<T>& A);
+    V3D<T>  from_polar (T r, T thetta, T fi);
 
-    template <typename N>
-    V3D<T> operator* (N A);
+    V3D<T>  normalize ();
 
-    template <typename N>
-    V3D<T> operator/ (N A);
-
-    template <typename N>
-    V3D<T> from_polar (const V3D<N>& A);
-
-    V3D<T> from_polar (T r, T thetta, T fi);
-
-    V3D<T> normalize ();
-
-    template <typename N>
-    friend V3D<T> mul (const V3D<T>& A, const V3D<N>& B);
+    template <typename V>
+    friend V3D<V> mul (const V3D<V>& A, const V3D<V>& B);
 };
 
-//Implementation
+// Implementation
 //{
 template <typename T>
 void V3D<T>::set_ (T X, T Y, T Z) {
@@ -101,22 +88,19 @@ T V3D<T>::module () {
 }
 
 template <typename T>
-template <typename N>
-void V3D<T>::operator= (const V3D<N>& A) {
+void V3D<T>::operator= (const V3D<T>& A) {
     x = A.x;
     y = A.y;
     z = A.z;
 }
 
 template <typename T>
-template <typename N>
-V3D<T> V3D<T>::operator+ (const V3D<N>& A) {
+V3D<T> V3D<T>::operator+ (const V3D<T>& A) {
     return V3D<T> (this->x + A.x, this->y + A.y, this->z + A.z);
 }
 
 template <typename T>
-template <typename N>
-V3D<T>& V3D<T>::operator+= (const V3D<N>& A) {
+V3D<T>& V3D<T>::operator+= (const V3D<T>& A) {
     this->x += A.x;
     this->y += A.y;
     this->z += A.z;
@@ -124,14 +108,12 @@ V3D<T>& V3D<T>::operator+= (const V3D<N>& A) {
 }
 
 template <typename T>
-template <typename N>
-V3D<T> V3D<T>::operator- (const V3D<N>& A) {
+V3D<T> V3D<T>::operator- (const V3D<T>& A) {
     return V3D<T> (this->x - A.x, this->y - A.y, this->z - A.z);
 }
 
 template <typename T>
-template <typename N>
-V3D<T>& V3D<T>::operator-= (const V3D<N>& A) {
+V3D<T>& V3D<T>::operator-= (const V3D<T>& A) {
     this->x -= A.x;
     this->y -= A.y;
     this->z -= A.z;
@@ -139,8 +121,7 @@ V3D<T>& V3D<T>::operator-= (const V3D<N>& A) {
 }
 
 template <typename T>
-template <typename N>
-V3D<T> V3D<T>::operator* (N A) {
+V3D<T> V3D<T>::operator* (T A) {
     return V3D<T> (this->x * A, this->y * A, this->z * A);
 }
 
@@ -150,21 +131,18 @@ V3D<T> V3D<T>::operator* (N A) {
 // { return V3D<T>(this->y * A.z - this->z * A.y, - (this->x * A.z - this->z * A.x), this->x * A.y - this->y * A.x); }
 
 template <typename T>
-template <typename N>
-V3D<T> V3D<T>::operator/ (N Num) {
+V3D<T> V3D<T>::operator/ (T Num) {
     return V3D<T> (this->x / Num, this->y / Num, this->z / Num);
 }
 
 template <typename T>
-template <typename N>
-V3D<T> V3D<T>::from_polar (const V3D<N>& A) // r thetta fi
+V3D<T> V3D<T>::from_polar (const V3D<T>& A) // r thetta fi
 {
     return V3D<T> (A.x * sin (A.y) * cos (A.z), A.x * sin (A.y) * sin (A.z), A.x * cos (A.y));
 }
 
 template <typename T>
-V3D<T> V3D<T>::from_polar (T r, T thetta, T fi) 
-{
+V3D<T> V3D<T>::from_polar (T r, T thetta, T fi) {
     return V3D<T> (r * sin (thetta) * cos (fi), r * sin (thetta) * sin (fi), r * cos (thetta));
 }
 
@@ -174,11 +152,11 @@ V3D<T> V3D<T>::normalize () {
     return length == 0 ? *this : *this / length;
 }
 
-template <typename T, typename N>
-V3D<T> mul (const V3D<T>& A, const V3D<N>& B) {
+template <typename T>
+V3D<T> mul (const V3D<T>& A, const V3D<T>& B) {
     return V3D (A.y * B.z - A.z * B.y, -(A.x * B.z - A.z * B.x), A.x * B.y - A.y * B.x);
 }
 
 //}
 
-#endif //V3D_GUARD
+#endif // V3D_GUARD
